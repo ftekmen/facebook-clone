@@ -21,7 +21,6 @@ function Stories() {
 
   return (
     <div className="flex justify-center space-x-3 mx-auto">
-      {console.log(stories)}
       {stories.map(story => (
         <StoryCard key={story.email} name={story.name.first + ' ' + story.name.last} src={story.picture.large} profile={story.picture.thumbnail} />
       ))}
