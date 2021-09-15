@@ -15,7 +15,7 @@ const Header = () => {
       </div>
       <div className="flex ml-2 items-center rounded-full bg-gray-100 p-2">
         <SearchIcon className="h-6 text-gray-600" />
-        <input className="hidden md:inline-flex flex flex-shrink ml-2 items-center bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search Facebook" />
+        <input className="hidden md:inline-flex flex-shrink ml-2 items-center bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search Facebook" />
       </div>
 
       {/* Center */}
