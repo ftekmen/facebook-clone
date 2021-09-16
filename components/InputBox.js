@@ -2,15 +2,17 @@ import { useSession } from "next-auth/client";
 import Image from "next/image";
 import { EmojiHappyIcon } from "@heroicons/react/outline";
 import { CameraIcon, VideoCameraIcon } from "@heroicons/react/solid";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { db, storage, ref, uploadString, getDownloadURL } from "../firebase";
 import { collection, addDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { DBContext } from "../DBContext";
 
 function InputBox() {
   const [session] = useSession();
   const inputRef = useRef(null);
   const filePickerRef = useRef(null);
   const [imageToPost, setImageToPost] = useState(null);
+  const { toggleUpdate } = useContext(DBContext);
 
   const sendPost = async (e) => {
     e.preventDefault();
@@ -26,20 +28,23 @@ function InputBox() {
         timestamp: serverTimestamp()
       });
 
-      // docRef.path = posts/#docid
-      const storageRef = ref(storage, docRef.path);
-      const uploadTask = await uploadString(storageRef, imageToPost, 'data_url');
+      if (imageToPost) {
+        // docRef.path = posts/#docid
+        const storageRef = ref(storage, docRef.path);
+        const uploadTask = await uploadString(storageRef, imageToPost, 'data_url');
 
-      removeImage();
+        removeImage();
 
-      await getDownloadURL(uploadTask.ref).then(async (downloadURL) => {
-        await setDoc(doc(db, 'posts', docRef.id), { postImage: downloadURL }, { merge: true });
-      });
+        await getDownloadURL(uploadTask.ref).then(async (downloadURL) => {
+          await setDoc(doc(db, 'posts', docRef.id), { postImage: downloadURL }, { merge: true });
+        });
+      }
 
     } catch (e) {
       console.error('Error adding document: ' + e);
     }
 
+    toggleUpdate();
     inputRef.current.value = '';
   };
 

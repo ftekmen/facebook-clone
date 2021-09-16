@@ -1,10 +1,12 @@
 import { query, orderBy, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Post from './Post';
+import { DBContext } from '../DBContext';
 
 function Posts() {
   let [querySnapshot, setQuerySnapshot] = useState([]);
+  const { update } = useContext(DBContext);
 
   async function getSnapshot() {
     const postsRef = collection(db, 'posts');
@@ -23,7 +25,7 @@ function Posts() {
     return () => {
       console.log('useEffect return');
     }
-  }, []);
+  }, [update]);
 
   return (
     <div>
@@ -38,6 +40,7 @@ function Posts() {
           postImage={post.data().postImage}
         />
       ))}
+      {console.log(update)}
     </div>
   )
 }
