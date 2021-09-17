@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import Post from './Post';
 import { DBContext } from '../DBContext';
 
-function Posts() {
+function Posts({ posts }) {
   let [querySnapshot, setQuerySnapshot] = useState([]);
   const { update } = useContext(DBContext);
 
@@ -20,8 +20,8 @@ function Posts() {
     let didCancel = false;
 
     (async () => {
-      const posts = await getSnapshot();
-      !didCancel && setQuerySnapshot(posts);
+      const postsSnapshot = await getSnapshot();
+      !didCancel && (postsSnapshot ? setQuerySnapshot(postsSnapshot) : setQuerySnapshot(posts));
     })();
 
     return () => {
