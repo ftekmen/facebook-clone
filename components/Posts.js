@@ -17,14 +17,16 @@ function Posts() {
   }
 
   useEffect(() => {
+    let didCancel = false;
+
     (async () => {
       const posts = await getSnapshot();
-      setQuerySnapshot(posts);
+      !didCancel && setQuerySnapshot(posts);
     })();
 
     return () => {
-      console.log('useEffect return');
-    }
+      didCancel = true;
+    };
   }, [update]);
 
   return (

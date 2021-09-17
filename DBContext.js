@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 
 export const DBContext = createContext();
 
@@ -10,8 +10,10 @@ export default function DBProvider({ children }) {
     setUpdate(prevUpdate => prevUpdate === 'run!' ? 'run!!' : 'run!');
   }
 
+  const value = useMemo(() => ({update, toggleUpdate}), [update, toggleUpdate]);
+
   return (
-    <DBContext.Provider value={{ update, toggleUpdate }}>
+    <DBContext.Provider value={value}>
       {children}
     </DBContext.Provider>
   );

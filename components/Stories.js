@@ -13,10 +13,13 @@ import StoryCard from "./StoryCard";
 function Stories() {
   let [stories, setStories] = useState([]);
 
-  useEffect(async () => {
-    const res = await fetch('https://randomuser.me/api/?results=5');
-    const data = await res.json();
-    setStories(data.results);
+  useEffect(() => {
+    async function getUsers() {
+      const res = await fetch('https://randomuser.me/api/?results=5');
+      const data = await res.json();
+      setStories(data.results);
+    }
+    getUsers();
   }, []);
 
   return (
